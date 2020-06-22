@@ -8,20 +8,28 @@ import {
   Input,
   InputGroupAddon,
   Button,
+  Table,
 } from "reactstrap";
 
 function App() {
   const [value, setValue] = useState("");
-  const [todos, setTodo] = useState([]);
+  const [todos, setTodos] = useState([]);
   const handleSubmit = (e) => {
     e.preventDefault();
     addTodo(value);
+    setValue("");
   };
 
   const addTodo = (text) => {
     const newTodos = [...todos, text];
-    setTodo(newTodos);
+    setTodos(newTodos);
     console.log(newTodos);
+  };
+
+  const removeTodo = (index) => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
+    setTodos(newTodos);
   };
   return (
     <div className="App">
@@ -41,6 +49,23 @@ function App() {
             </InputGroupAddon>
           </InputGroup>
         </Form>
+      </Container>
+      <Container>
+        <Table>
+          <tbody>
+            {todos &&
+              todos.map((todo, index) => (
+                <tr key={index}>
+                  <th className="text-left">{todo}</th>
+                  <td className="text-right">
+                    <Button color="danger" onClick={() => removeTodo(index)}>
+                      削除
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
       </Container>
     </div>
   );
